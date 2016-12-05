@@ -1,0 +1,11 @@
+-mjwx
+-i _build/Z80-Template.hex
+-b _CODE = 0x00a0
+-b _DATA = 0x8000
+-k /opt/SMZ80_SDK/V1/tools/mac/../share/sdcc/lib/z80
+-k /usr/local/share/sdcc/lib/z80
+-l z80
+_build/sysmap.rel
+_build/Z80-Template.rel
+
+-e

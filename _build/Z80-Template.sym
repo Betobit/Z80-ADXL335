@@ -1,0 +1,68 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+Hexadecimal [16-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =  2710 L
+    .__.ABS.                                                    =  0000 G
+    .__.CPU.                                                    =  0000 L
+    .__.H$L.                                                    =  0000 L
+  0 LOOP_10                                                        01F5 R
+  0 LOOP_100                                                       01FE R
+    _PPI_CTRL                                                   =  0003 
+    _PPI_PORTA                                                  =  0000 
+    _PPI_PORTB                                                  =  0001 
+    _PPI_PORTC                                                  =  0002 
+    _URDLL                                                      =  0010 
+    _URDLM                                                      =  0011 
+    _URIER                                                      =  0011 
+    _URIIR                                                      =  0012 
+    _URLCR                                                      =  0013 
+    _URLSR                                                      =  0015 
+    _URMCR                                                      =  0014 
+    _URMSR                                                      =  0016 
+    _URRBR                                                      =  0010 
+    _URTHR                                                      =  0010 
+  1 ___ret_aux                                                     0000 R
+  0 _delay_100us                                                   01FA GR
+  0 _delay_10us                                                    01F1 GR
+  0 _delay_ms                                                      0203 GR
+  0 _getchar                                                       0254 GR
+  0 _io_read                                                       0011 GR
+  0 _io_read_buffer                                                0042 GR
+  0 _io_write                                                      0000 GR
+  0 _io_write_buffer                                               0027 GR
+    _isprint                                                       **** GX
+  0 _isr_vector38                                                  0265 GR
+  0 _isr_vector66                                                  0257 GR
+  0 _main                                                          0275 GR
+  0 _ppi_clear_portc_bit                                           01E8 GR
+  0 _ppi_init                                                      019F GR
+  0 _ppi_set_portc_bit                                             01DD GR
+  0 _putchar                                                       0229 GR
+  0 _system_init                                                   0274 GR
+  0 _uart_disable_interrupts                                       0192 GR
+  0 _uart_enable_interrupts                                        0197 GR
+  0 _uart_init                                                     005D GR
+  0 _uart_print                                                    00C9 GR
+  0 _uart_read                                                     00BD GR
+  0 _uart_read_line                                                00DD GR
+  0 _uart_set_baudrate                                             0094 GR
+  0 _uart_write                                                    00AC GR
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+Hexadecimal [16-Bits]
+
+Area Table
+
+   0 _CODE                                      size  296   flags    0
+   1 _DATA                                      size    1   flags    0
+   2 _INITIALIZED                               size    0   flags    0
+   3 _DABS                                      size    0   flags    8
+   4 _HOME                                      size    0   flags    0
+   5 _GSINIT                                    size    0   flags    0
+   6 _GSFINAL                                   size    0   flags    0
+   7 _INITIALIZER                               size    0   flags    0
+   8 _CABS                                      size    0   flags    8
+
