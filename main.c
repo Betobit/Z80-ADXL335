@@ -22,7 +22,6 @@ void system_init() {
 }
 
 int main() {
-    // Inicialización del sistema.
     system_init();
     // Ciclo infinito del programa.
     while(TRUE){
