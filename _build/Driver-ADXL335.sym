@@ -9,21 +9,25 @@ Symbol Table
     .__.H$L.                                                    =  0000 L
   0 LOOP_10                                                        01F5 R
   0 LOOP_100                                                       01FE R
-    _PPI_CTRL                                                   =  0003 
-    _PPI_PORTA                                                  =  0000 
-    _PPI_PORTB                                                  =  0001 
-    _PPI_PORTC                                                  =  0002 
-    _URDLL                                                      =  0010 
-    _URDLM                                                      =  0011 
-    _URIER                                                      =  0011 
-    _URIIR                                                      =  0012 
-    _URLCR                                                      =  0013 
-    _URLSR                                                      =  0015 
-    _URMCR                                                      =  0014 
-    _URMSR                                                      =  0016 
-    _URRBR                                                      =  0010 
-    _URTHR                                                      =  0010 
+    _PORTA                                                      =  0060 
+    _PORTB                                                      =  0061 
+    _PORTC                                                      =  0062 
+    _PPI_CTRL                                                   =  0063 
+    _PPI_PORTA                                                  =  0060 
+    _PPI_PORTB                                                  =  0061 
+    _PPI_PORTC                                                  =  0062 
+    _URDLL                                                      =  0070 
+    _URDLM                                                      =  0071 
+    _URIER                                                      =  0071 
+    _URIIR                                                      =  0072 
+    _URLCR                                                      =  0073 
+    _URLSR                                                      =  0075 
+    _URMCR                                                      =  0074 
+    _URMSR                                                      =  0076 
+    _URRBR                                                      =  0070 
+    _URTHR                                                      =  0070 
   1 ___ret_aux                                                     0000 R
+  0 _configPPI                                                     02CC GR
   0 _delay_100us                                                   01FA GR
   0 _delay_10us                                                    01F1 GR
   0 _delay_ms                                                      0203 GR
@@ -35,12 +39,12 @@ Symbol Table
     _isprint                                                       **** GX
   0 _isr_vector38                                                  0265 GR
   0 _isr_vector66                                                  0257 GR
-  0 _main                                                          0275 GR
+  0 _main                                                          0274 GR
   0 _ppi_clear_portc_bit                                           01E8 GR
   0 _ppi_init                                                      019F GR
   0 _ppi_set_portc_bit                                             01DD GR
   0 _putchar                                                       0229 GR
-  0 _system_init                                                   0274 GR
+  0 _system_init                                                   0299 GR
   0 _uart_disable_interrupts                                       0192 GR
   0 _uart_enable_interrupts                                        0197 GR
   0 _uart_init                                                     005D GR
@@ -56,7 +60,7 @@ Hexadecimal [16-Bits]
 
 Area Table
 
-   0 _CODE                                      size  296   flags    0
+   0 _CODE                                      size  2D1   flags    0
    1 _DATA                                      size    1   flags    0
    2 _INITIALIZED                               size    0   flags    0
    3 _DABS                                      size    0   flags    8

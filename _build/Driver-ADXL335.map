@@ -44,11 +44,11 @@ Area                                    Addr        Size        Decimal Bytes (A
      0000000A  l__HEADER9                      
      0000000F  l__GSINIT                       
      000000A0  s__CODE                         
-     000002C8  l__CODE                         
-     00000368  s__GSINIT                       
-     00000368  s__HOME                         
-     00000368  s__INITIALIZER                  
-     00000377  s__GSFINAL                      
+     00000303  l__CODE                         
+     000003A3  s__GSINIT                       
+     000003A3  s__HOME                         
+     000003A3  s__INITIALIZER                  
+     000003B2  s__GSFINAL                      
      00008000  s__DATA                         
      00008001  s__BSEG                         
      00008001  s__BSS                          
@@ -60,7 +60,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_CODE                               000000A0    000002C8 =         712. bytes (REL,CON)
+_CODE                               000000A0    00000303 =         771. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -86,9 +86,10 @@ _CODE                               000000A0    000002C8 =         712. bytes (R
      000002F4  _getchar                           main
      000002F7  _isr_vector66                      main
      00000305  _isr_vector38                      main
-     00000314  _system_init                       main
-     00000315  _main                              main
-     00000336  _isprint                           isprint
+     00000314  _main                              main
+     00000339  _system_init                       main
+     0000036C  _configPPI                         main
+     00000371  _isprint                           isprint
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
 Hexadecimal  [32-Bits]
@@ -131,18 +132,18 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_GSINIT                             00000368    0000000F =          15. bytes (REL,CON)
+_GSINIT                             000003A3    0000000F =          15. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00000368  gsinit                             init
+     000003A3  gsinit                             init
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 8.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_GSFINAL                            00000377    00000001 =           1. bytes (REL,CON)
+_GSFINAL                            000003B2    00000001 =           1. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -160,7 +161,7 @@ _DATA                               00008000    00000001 =           1. bytes (R
 Files Linked                              [ module(s) ]
 
 _build/sysmap.rel                         [ init ]
-_build/Z80-Template.rel                   [ main ]
+_build/Driver-ADXL335.rel                 [ main ]
 
 
 Libraries Linked                          [ object file ]

@@ -1,0 +1,737 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.6.3 #9775 (Mac OS X i386)
+                              4 ;--------------------------------------------------------
+                              5 	.module main
+                              6 	.optsdcc -mz80
+                              7 	
+                              8 ;--------------------------------------------------------
+                              9 ; Public variables in this module
+                             10 ;--------------------------------------------------------
+                             11 	.globl _main
+                             12 	.globl _isr_vector38
+                             13 	.globl _isr_vector66
+                             14 	.globl _isprint
+                             15 	.globl _io_write
+                             16 	.globl _io_read
+                             17 	.globl _io_write_buffer
+                             18 	.globl _io_read_buffer
+                             19 	.globl _uart_init
+                             20 	.globl _uart_set_baudrate
+                             21 	.globl _uart_write
+                             22 	.globl _uart_read
+                             23 	.globl _uart_print
+                             24 	.globl _uart_read_line
+                             25 	.globl _uart_disable_interrupts
+                             26 	.globl _uart_enable_interrupts
+                             27 	.globl _ppi_init
+                             28 	.globl _ppi_set_portc_bit
+                             29 	.globl _ppi_clear_portc_bit
+                             30 	.globl _delay_10us
+                             31 	.globl _delay_100us
+                             32 	.globl _delay_ms
+                             33 	.globl _putchar
+                             34 	.globl _getchar
+                             35 	.globl _system_init
+                             36 	.globl _configPPI
+                             37 ;--------------------------------------------------------
+                             38 ; special function registers
+                             39 ;--------------------------------------------------------
+                     0060    40 _PPI_PORTA	=	0x0060
+                     0061    41 _PPI_PORTB	=	0x0061
+                     0062    42 _PPI_PORTC	=	0x0062
+                     0063    43 _PPI_CTRL	=	0x0063
+                     0070    44 _URRBR	=	0x0070
+                     0070    45 _URTHR	=	0x0070
+                     0071    46 _URIER	=	0x0071
+                     0072    47 _URIIR	=	0x0072
+                     0073    48 _URLCR	=	0x0073
+                     0075    49 _URLSR	=	0x0075
+                     0074    50 _URMCR	=	0x0074
+                     0076    51 _URMSR	=	0x0076
+                     0070    52 _URDLL	=	0x0070
+                     0071    53 _URDLM	=	0x0071
+                     0060    54 _PORTA	=	0x0060
+                     0061    55 _PORTB	=	0x0061
+                     0062    56 _PORTC	=	0x0062
+                             57 ;--------------------------------------------------------
+                             58 ; ram data
+                             59 ;--------------------------------------------------------
+                             60 	.area _DATA
+   0000                      61 ___ret_aux:
+   0000                      62 	.ds 1
+                             63 ;--------------------------------------------------------
+                             64 ; ram data
+                             65 ;--------------------------------------------------------
+                             66 	.area _INITIALIZED
+                             67 ;--------------------------------------------------------
+                             68 ; absolute external ram data
+                             69 ;--------------------------------------------------------
+                             70 	.area _DABS (ABS)
+                             71 ;--------------------------------------------------------
+                             72 ; global & static initialisations
+                             73 ;--------------------------------------------------------
+                             74 	.area _HOME
+                             75 	.area _GSINIT
+                             76 	.area _GSFINAL
+                             77 	.area _GSINIT
+                             78 ;--------------------------------------------------------
+                             79 ; Home
+                             80 ;--------------------------------------------------------
+                             81 	.area _HOME
+                             82 	.area _HOME
+                             83 ;--------------------------------------------------------
+                             84 ; code
+                             85 ;--------------------------------------------------------
+                             86 	.area _CODE
+                             87 ;/opt/SMZ80_SDK/V1/include/smz80.h:230: void io_write(char port_addr, char data) {
+                             88 ;	---------------------------------
+                             89 ; Function io_write
+                             90 ; ---------------------------------
+   0000                      91 _io_write::
+                             92 ;/opt/SMZ80_SDK/V1/include/smz80.h:240: __endasm;
+   0000 DD 21 02 00   [14]   93 	ld	ix, #2
+   0004 DD 39         [15]   94 	add	ix,sp
+   0006 DD 4E 00      [19]   95 	ld	c, (ix)
+   0009 DD 23         [10]   96 	inc	ix
+   000B DD 7E 00      [19]   97 	ld	a,(ix)
+   000E ED 79         [12]   98 	out	(c), a
+   0010 C9            [10]   99 	ret
+                            100 ;/opt/SMZ80_SDK/V1/include/smz80.h:243: char io_read(char port_addr) {
+                            101 ;	---------------------------------
+                            102 ; Function io_read
+                            103 ; ---------------------------------
+   0011                     104 _io_read::
+                            105 ;/opt/SMZ80_SDK/V1/include/smz80.h:251: __endasm;
+   0011 DD 21 02 00   [14]  106 	LD	IX, #2
+   0015 DD 39         [15]  107 	ADD	IX,SP
+   0017 DD 4E 00      [19]  108 	LD	C, (IX)
+   001A ED 78         [12]  109 	IN	A,(C)
+   001C 32r00r00      [13]  110 	LD	(___ret_aux),A
+                            111 ;/opt/SMZ80_SDK/V1/include/smz80.h:252: return __ret_aux;
+   001F FD 21r00r00   [14]  112 	ld	iy,#___ret_aux
+   0023 FD 6E 00      [19]  113 	ld	l,0 (iy)
+   0026 C9            [10]  114 	ret
+                            115 ;/opt/SMZ80_SDK/V1/include/smz80.h:254: void io_write_buffer(char port_addr, char* buffer_out, char count) {
+                            116 ;	---------------------------------
+                            117 ; Function io_write_buffer
+                            118 ; ---------------------------------
+   0027                     119 _io_write_buffer::
+                            120 ;/opt/SMZ80_SDK/V1/include/smz80.h:269: __endasm;
+   0027 DD 21 02 00   [14]  121 	LD	IX, #2
+   002B DD 39         [15]  122 	ADD	IX,SP
+   002D DD 4E 00      [19]  123 	LD	C, (IX)
+   0030 DD 23         [10]  124 	INC	IX
+   0032 DD 6E 00      [19]  125 	LD	L,(IX)
+   0035 DD 23         [10]  126 	INC	IX
+   0037 DD 66 00      [19]  127 	LD	H,(IX)
+   003A DD 23         [10]  128 	INC	IX
+   003C DD 46 00      [19]  129 	LD	B,(IX)
+   003F ED B3         [21]  130 	OTIR
+   0041 C9            [10]  131 	ret
+                            132 ;/opt/SMZ80_SDK/V1/include/smz80.h:271: void io_read_buffer(char port_addr, char* buffer_in, char count) {
+                            133 ;	---------------------------------
+                            134 ; Function io_read_buffer
+                            135 ; ---------------------------------
+   0042                     136 _io_read_buffer::
+                            137 ;/opt/SMZ80_SDK/V1/include/smz80.h:286: __endasm;
+   0042 DD 21 02 00   [14]  138 	LD	IX, #2
+   0046 DD 39         [15]  139 	ADD	IX,SP
+   0048 DD 4E 00      [19]  140 	LD	C, (IX)
+   004B DD 23         [10]  141 	INC	IX
+   004D DD 6E 00      [19]  142 	LD	L,(IX)
+   0050 DD 23         [10]  143 	INC	IX
+   0052 DD 66 00      [19]  144 	LD	H,(IX)
+   0055 DD 23         [10]  145 	INC	IX
+   0057 DD 46 00      [19]  146 	LD	B,(IX)
+   005A ED B2         [21]  147 	INIR
+   005C C9            [10]  148 	ret
+                            149 ;/opt/SMZ80_SDK/V1/include/smz80.h:289: void uart_init(const uart_cfg_t *uart_config) {
+                            150 ;	---------------------------------
+                            151 ; Function uart_init
+                            152 ; ---------------------------------
+   005D                     153 _uart_init::
+   005D DD E5         [15]  154 	push	ix
+   005F DD 21 00 00   [14]  155 	ld	ix,#0
+   0063 DD 39         [15]  156 	add	ix,sp
+                            157 ;/opt/SMZ80_SDK/V1/include/smz80.h:290: uart_set_baudrate(uart_config->baudrate);
+   0065 DD 4E 04      [19]  158 	ld	c,4 (ix)
+   0068 DD 46 05      [19]  159 	ld	b,5 (ix)
+   006B 0A            [ 7]  160 	ld	a,(bc)
+   006C 57            [ 4]  161 	ld	d,a
+   006D C5            [11]  162 	push	bc
+   006E D5            [11]  163 	push	de
+   006F 33            [ 6]  164 	inc	sp
+   0070 CDr94r00      [17]  165 	call	_uart_set_baudrate
+   0073 33            [ 6]  166 	inc	sp
+   0074 C1            [10]  167 	pop	bc
+                            168 ;/opt/SMZ80_SDK/V1/include/smz80.h:291: URIER = uart_config->interrupt;
+   0075 69            [ 4]  169 	ld	l, c
+   0076 60            [ 4]  170 	ld	h, b
+   0077 11 04 00      [10]  171 	ld	de, #0x0004
+   007A 19            [11]  172 	add	hl, de
+   007B 7E            [ 7]  173 	ld	a,(hl)
+   007C D3 71         [11]  174 	out	(_URIER),a
+                            175 ;/opt/SMZ80_SDK/V1/include/smz80.h:292: URLCR = (uart_config->stop_bits) | (uart_config->parity) | (uart_config->word_length);
+   007E 69            [ 4]  176 	ld	l, c
+   007F 60            [ 4]  177 	ld	h, b
+   0080 23            [ 6]  178 	inc	hl
+   0081 5E            [ 7]  179 	ld	e,(hl)
+   0082 69            [ 4]  180 	ld	l, c
+   0083 60            [ 4]  181 	ld	h, b
+   0084 23            [ 6]  182 	inc	hl
+   0085 23            [ 6]  183 	inc	hl
+   0086 7E            [ 7]  184 	ld	a,(hl)
+   0087 B3            [ 4]  185 	or	a, e
+   0088 69            [ 4]  186 	ld	l, c
+   0089 60            [ 4]  187 	ld	h, b
+   008A 23            [ 6]  188 	inc	hl
+   008B 23            [ 6]  189 	inc	hl
+   008C 23            [ 6]  190 	inc	hl
+   008D 4E            [ 7]  191 	ld	c,(hl)
+   008E B1            [ 4]  192 	or	a, c
+   008F D3 73         [11]  193 	out	(_URLCR),a
+   0091 DD E1         [14]  194 	pop	ix
+   0093 C9            [10]  195 	ret
+                            196 ;/opt/SMZ80_SDK/V1/include/smz80.h:294: void uart_set_baudrate(const uart_baudrate_t baudrate) {
+                            197 ;	---------------------------------
+                            198 ; Function uart_set_baudrate
+                            199 ; ---------------------------------
+   0094                     200 _uart_set_baudrate::
+                            201 ;/opt/SMZ80_SDK/V1/include/smz80.h:295: URLCR |= BV(UDLAB);
+   0094 DB 73         [11]  202 	in	a,(_URLCR)
+   0096 CB FF         [ 8]  203 	set	7, a
+   0098 D3 73         [11]  204 	out	(_URLCR),a
+                            205 ;/opt/SMZ80_SDK/V1/include/smz80.h:296: URDLL = baudrate;
+   009A 21 02 00      [10]  206 	ld	hl, #2+0
+   009D 39            [11]  207 	add	hl, sp
+   009E 7E            [ 7]  208 	ld	a, (hl)
+   009F D3 70         [11]  209 	out	(_URDLL),a
+                            210 ;/opt/SMZ80_SDK/V1/include/smz80.h:297: URDLM = ((uint16_t)baudrate)>>8;
+   00A1 3E 00         [ 7]  211 	ld	a, #0x00
+   00A3 D3 71         [11]  212 	out	(_URDLM),a
+                            213 ;/opt/SMZ80_SDK/V1/include/smz80.h:298: URLCR &= ~BV(UDLAB);
+   00A5 DB 73         [11]  214 	in	a,(_URLCR)
+   00A7 E6 7F         [ 7]  215 	and	a, #0x7f
+   00A9 D3 73         [11]  216 	out	(_URLCR),a
+   00AB C9            [10]  217 	ret
+                            218 ;/opt/SMZ80_SDK/V1/include/smz80.h:300: void uart_write(char c) {
+                            219 ;	---------------------------------
+                            220 ; Function uart_write
+                            221 ; ---------------------------------
+   00AC                     222 _uart_write::
+                            223 ;/opt/SMZ80_SDK/V1/include/smz80.h:301: while( !(URLSR & BV(UTHRE)))
+   00AC                     224 00101$:
+   00AC DB 75         [11]  225 	in	a,(_URLSR)
+   00AE E6 20         [ 7]  226 	and	a, #0x20
+   00B0 20 03         [12]  227 	jr	NZ,00103$
+                            228 ;/opt/SMZ80_SDK/V1/include/smz80.h:302: NOP();    
+   00B2 00            [ 4]  229 	NOP
+   00B3 18 F7         [12]  230 	jr	00101$
+   00B5                     231 00103$:
+                            232 ;/opt/SMZ80_SDK/V1/include/smz80.h:303: URTHR = c;
+   00B5 21 02 00      [10]  233 	ld	hl, #2+0
+   00B8 39            [11]  234 	add	hl, sp
+   00B9 7E            [ 7]  235 	ld	a, (hl)
+   00BA D3 70         [11]  236 	out	(_URTHR),a
+   00BC C9            [10]  237 	ret
+                            238 ;/opt/SMZ80_SDK/V1/include/smz80.h:305: char uart_read() {
+                            239 ;	---------------------------------
+                            240 ; Function uart_read
+                            241 ; ---------------------------------
+   00BD                     242 _uart_read::
+                            243 ;/opt/SMZ80_SDK/V1/include/smz80.h:306: while(!(URLSR & BV(UDR))) 
+   00BD                     244 00101$:
+   00BD DB 75         [11]  245 	in	a,(_URLSR)
+   00BF 0F            [ 4]  246 	rrca
+   00C0 38 03         [12]  247 	jr	C,00103$
+                            248 ;/opt/SMZ80_SDK/V1/include/smz80.h:307: NOP();
+   00C2 00            [ 4]  249 	NOP
+   00C3 18 F8         [12]  250 	jr	00101$
+   00C5                     251 00103$:
+                            252 ;/opt/SMZ80_SDK/V1/include/smz80.h:308: return URRBR;
+   00C5 DB 70         [11]  253 	in	a,(_URRBR)
+   00C7 6F            [ 4]  254 	ld	l,a
+   00C8 C9            [10]  255 	ret
+                            256 ;/opt/SMZ80_SDK/V1/include/smz80.h:310: void uart_print(const char* str) {
+                            257 ;	---------------------------------
+                            258 ; Function uart_print
+                            259 ; ---------------------------------
+   00C9                     260 _uart_print::
+                            261 ;/opt/SMZ80_SDK/V1/include/smz80.h:311: while(*str)       
+   00C9 D1            [10]  262 	pop	de
+   00CA C1            [10]  263 	pop	bc
+   00CB C5            [11]  264 	push	bc
+   00CC D5            [11]  265 	push	de
+   00CD                     266 00101$:
+   00CD 0A            [ 7]  267 	ld	a,(bc)
+   00CE B7            [ 4]  268 	or	a, a
+   00CF C8            [11]  269 	ret	Z
+                            270 ;/opt/SMZ80_SDK/V1/include/smz80.h:312: putchar(*str++); // envía el siguiente caracter. 
+   00D0 5F            [ 4]  271 	ld	e,a
+   00D1 03            [ 6]  272 	inc	bc
+   00D2 16 00         [ 7]  273 	ld	d,#0x00
+   00D4 C5            [11]  274 	push	bc
+   00D5 D5            [11]  275 	push	de
+   00D6 CDr29r02      [17]  276 	call	_putchar
+   00D9 F1            [10]  277 	pop	af
+   00DA C1            [10]  278 	pop	bc
+   00DB 18 F0         [12]  279 	jr	00101$
+                            280 ;/opt/SMZ80_SDK/V1/include/smz80.h:314: int uart_read_line(char* str) {
+                            281 ;	---------------------------------
+                            282 ; Function uart_read_line
+                            283 ; ---------------------------------
+   00DD                     284 _uart_read_line::
+   00DD DD E5         [15]  285 	push	ix
+   00DF DD 21 00 00   [14]  286 	ld	ix,#0
+   00E3 DD 39         [15]  287 	add	ix,sp
+   00E5 F5            [11]  288 	push	af
+                            289 ;/opt/SMZ80_SDK/V1/include/smz80.h:315: int n=0;
+   00E6 01 00 00      [10]  290 	ld	bc,#0x0000
+                            291 ;/opt/SMZ80_SDK/V1/include/smz80.h:317: while(n<MAXLINE-1 && (c=getchar()) != '\n' && c !='\r') {
+   00E9                     292 00111$:
+   00E9 79            [ 4]  293 	ld	a,c
+   00EA D6 FF         [ 7]  294 	sub	a, #0xff
+   00EC 78            [ 4]  295 	ld	a,b
+   00ED 17            [ 4]  296 	rla
+   00EE 3F            [ 4]  297 	ccf
+   00EF 1F            [ 4]  298 	rra
+   00F0 DE 83         [ 7]  299 	sbc	a, #0x83
+   00F2 D2r7Ar01      [10]  300 	jp	NC,00113$
+   00F5 C5            [11]  301 	push	bc
+   00F6 CDr54r02      [17]  302 	call	_getchar
+   00F9 C1            [10]  303 	pop	bc
+   00FA 7D            [ 4]  304 	ld	a,l
+   00FB 5F            [ 4]  305 	ld	e,a
+   00FC D6 0A         [ 7]  306 	sub	a, #0x0a
+   00FE CAr7Ar01      [10]  307 	jp	Z,00113$
+   0101 7B            [ 4]  308 	ld	a,e
+   0102 D6 0D         [ 7]  309 	sub	a, #0x0d
+   0104 28 74         [12]  310 	jr	Z,00113$
+                            311 ;/opt/SMZ80_SDK/V1/include/smz80.h:321: putchar(c);
+   0106 DD 73 FE      [19]  312 	ld	-2 (ix),e
+   0109 DD 36 FF 00   [19]  313 	ld	-1 (ix),#0x00
+                            314 ;/opt/SMZ80_SDK/V1/include/smz80.h:318: if(c == 0x7F || c==0x08) {
+   010D 7B            [ 4]  315 	ld	a,e
+   010E FE 7F         [ 7]  316 	cp	a,#0x7f
+   0110 28 04         [12]  317 	jr	Z,00105$
+   0112 D6 08         [ 7]  318 	sub	a, #0x08
+   0114 20 32         [12]  319 	jr	NZ,00106$
+   0116                     320 00105$:
+                            321 ;/opt/SMZ80_SDK/V1/include/smz80.h:319: if(n>0){
+   0116 AF            [ 4]  322 	xor	a, a
+   0117 B9            [ 4]  323 	cp	a, c
+   0118 98            [ 4]  324 	sbc	a, b
+   0119 E2r1Er01      [10]  325 	jp	PO, 00149$
+   011C EE 80         [ 7]  326 	xor	a, #0x80
+   011E                     327 00149$:
+   011E F2rE9r00      [10]  328 	jp	P,00111$
+                            329 ;/opt/SMZ80_SDK/V1/include/smz80.h:320: str[--n]='\0';
+   0121 0B            [ 6]  330 	dec	bc
+   0122 DD 6E 04      [19]  331 	ld	l,4 (ix)
+   0125 DD 66 05      [19]  332 	ld	h,5 (ix)
+   0128 09            [11]  333 	add	hl,bc
+   0129 36 00         [10]  334 	ld	(hl),#0x00
+                            335 ;/opt/SMZ80_SDK/V1/include/smz80.h:321: putchar(c);
+   012B C5            [11]  336 	push	bc
+   012C D1            [10]  337 	pop	de
+   012D E1            [10]  338 	pop	hl
+   012E E5            [11]  339 	push	hl
+   012F D5            [11]  340 	push	de
+   0130 E5            [11]  341 	push	hl
+   0131 CDr29r02      [17]  342 	call	_putchar
+   0134 21 20 00      [10]  343 	ld	hl, #0x0020
+   0137 E3            [19]  344 	ex	(sp),hl
+   0138 CDr29r02      [17]  345 	call	_putchar
+   013B F1            [10]  346 	pop	af
+   013C D1            [10]  347 	pop	de
+   013D E1            [10]  348 	pop	hl
+   013E E5            [11]  349 	push	hl
+   013F D5            [11]  350 	push	de
+   0140 E5            [11]  351 	push	hl
+   0141 CDr29r02      [17]  352 	call	_putchar
+   0144 F1            [10]  353 	pop	af
+   0145 C1            [10]  354 	pop	bc
+   0146 18 A1         [12]  355 	jr	00111$
+   0148                     356 00106$:
+                            357 ;/opt/SMZ80_SDK/V1/include/smz80.h:327: if(isprint(c)) {
+   0148 C5            [11]  358 	push	bc
+   0149 D5            [11]  359 	push	de
+   014A DD 6E FE      [19]  360 	ld	l,-2 (ix)
+   014D DD 66 FF      [19]  361 	ld	h,-1 (ix)
+   0150 E5            [11]  362 	push	hl
+   0151 CDr00r00      [17]  363 	call	_isprint
+   0154 F1            [10]  364 	pop	af
+   0155 D1            [10]  365 	pop	de
+   0156 C1            [10]  366 	pop	bc
+   0157 7C            [ 4]  367 	ld	a,h
+   0158 B5            [ 4]  368 	or	a,l
+   0159 28 8E         [12]  369 	jr	Z,00111$
+                            370 ;/opt/SMZ80_SDK/V1/include/smz80.h:328: str[n++]=c;
+   015B C5            [11]  371 	push	bc
+   015C FD E1         [14]  372 	pop	iy
+   015E 03            [ 6]  373 	inc	bc
+   015F C5            [11]  374 	push	bc
+   0160 DD 4E 04      [19]  375 	ld	c,4 (ix)
+   0163 DD 46 05      [19]  376 	ld	b,5 (ix)
+   0166 FD 09         [15]  377 	add	iy, bc
+   0168 C1            [10]  378 	pop	bc
+   0169 FD 73 00      [19]  379 	ld	0 (iy), e
+                            380 ;/opt/SMZ80_SDK/V1/include/smz80.h:329: putchar(c);
+   016C C5            [11]  381 	push	bc
+   016D D1            [10]  382 	pop	de
+   016E E1            [10]  383 	pop	hl
+   016F E5            [11]  384 	push	hl
+   0170 D5            [11]  385 	push	de
+   0171 E5            [11]  386 	push	hl
+   0172 CDr29r02      [17]  387 	call	_putchar
+   0175 F1            [10]  388 	pop	af
+   0176 C1            [10]  389 	pop	bc
+   0177 C3rE9r00      [10]  390 	jp	00111$
+   017A                     391 00113$:
+                            392 ;/opt/SMZ80_SDK/V1/include/smz80.h:332: str[n]='\0';     
+   017A DD 6E 04      [19]  393 	ld	l,4 (ix)
+   017D DD 66 05      [19]  394 	ld	h,5 (ix)
+   0180 09            [11]  395 	add	hl,bc
+   0181 36 00         [10]  396 	ld	(hl),#0x00
+                            397 ;/opt/SMZ80_SDK/V1/include/smz80.h:333: putchar('\n');
+   0183 C5            [11]  398 	push	bc
+   0184 21 0A 00      [10]  399 	ld	hl,#0x000a
+   0187 E5            [11]  400 	push	hl
+   0188 CDr29r02      [17]  401 	call	_putchar
+   018B F1            [10]  402 	pop	af
+                            403 ;/opt/SMZ80_SDK/V1/include/smz80.h:334: return n;
+   018C E1            [10]  404 	pop	hl
+   018D DD F9         [10]  405 	ld	sp, ix
+   018F DD E1         [14]  406 	pop	ix
+   0191 C9            [10]  407 	ret
+                            408 ;/opt/SMZ80_SDK/V1/include/smz80.h:336: void uart_disable_interrupts() {
+                            409 ;	---------------------------------
+                            410 ; Function uart_disable_interrupts
+                            411 ; ---------------------------------
+   0192                     412 _uart_disable_interrupts::
+                            413 ;/opt/SMZ80_SDK/V1/include/smz80.h:337: URIER = 0;
+   0192 3E 00         [ 7]  414 	ld	a,#0x00
+   0194 D3 71         [11]  415 	out	(_URIER),a
+   0196 C9            [10]  416 	ret
+                            417 ;/opt/SMZ80_SDK/V1/include/smz80.h:339: void uart_enable_interrupts(uart_interrupt_t int_cfg) {
+                            418 ;	---------------------------------
+                            419 ; Function uart_enable_interrupts
+                            420 ; ---------------------------------
+   0197                     421 _uart_enable_interrupts::
+                            422 ;/opt/SMZ80_SDK/V1/include/smz80.h:340: URIER = int_cfg;
+   0197 21 02 00      [10]  423 	ld	hl, #2+0
+   019A 39            [11]  424 	add	hl, sp
+   019B 7E            [ 7]  425 	ld	a, (hl)
+   019C D3 71         [11]  426 	out	(_URIER),a
+   019E C9            [10]  427 	ret
+                            428 ;/opt/SMZ80_SDK/V1/include/smz80.h:344: void ppi_init(const ppi_cfg_t *ppi_config) {
+                            429 ;	---------------------------------
+                            430 ; Function ppi_init
+                            431 ; ---------------------------------
+   019F                     432 _ppi_init::
+   019F DD E5         [15]  433 	push	ix
+   01A1 DD 21 00 00   [14]  434 	ld	ix,#0
+   01A5 DD 39         [15]  435 	add	ix,sp
+                            436 ;/opt/SMZ80_SDK/V1/include/smz80.h:345: PPI_CTRL = 0x80 | ppi_config->mode | (ppi_config->pcl_dir << PCPCL) | (ppi_config->pch_dir << PCPCH) | (ppi_config->pa_dir << PCPA) | (ppi_config->pb_dir << PCPB);
+   01A7 DD 5E 04      [19]  437 	ld	e,4 (ix)
+   01AA DD 56 05      [19]  438 	ld	d,5 (ix)
+   01AD 1A            [ 7]  439 	ld	a,(de)
+   01AE CB FF         [ 8]  440 	set	7, a
+   01B0 4F            [ 4]  441 	ld	c,a
+   01B1 6B            [ 4]  442 	ld	l, e
+   01B2 62            [ 4]  443 	ld	h, d
+   01B3 23            [ 6]  444 	inc	hl
+   01B4 23            [ 6]  445 	inc	hl
+   01B5 23            [ 6]  446 	inc	hl
+   01B6 7E            [ 7]  447 	ld	a,(hl)
+   01B7 B1            [ 4]  448 	or	a, c
+   01B8 4F            [ 4]  449 	ld	c,a
+   01B9 D5            [11]  450 	push	de
+   01BA FD E1         [14]  451 	pop	iy
+   01BC FD 7E 04      [19]  452 	ld	a,4 (iy)
+   01BF 07            [ 4]  453 	rlca
+   01C0 07            [ 4]  454 	rlca
+   01C1 07            [ 4]  455 	rlca
+   01C2 E6 F8         [ 7]  456 	and	a,#0xf8
+   01C4 B1            [ 4]  457 	or	a, c
+   01C5 4F            [ 4]  458 	ld	c,a
+   01C6 6B            [ 4]  459 	ld	l, e
+   01C7 62            [ 4]  460 	ld	h, d
+   01C8 23            [ 6]  461 	inc	hl
+   01C9 7E            [ 7]  462 	ld	a,(hl)
+   01CA 07            [ 4]  463 	rlca
+   01CB 07            [ 4]  464 	rlca
+   01CC 07            [ 4]  465 	rlca
+   01CD 07            [ 4]  466 	rlca
+   01CE E6 F0         [ 7]  467 	and	a,#0xf0
+   01D0 B1            [ 4]  468 	or	a, c
+   01D1 4F            [ 4]  469 	ld	c,a
+   01D2 EB            [ 4]  470 	ex	de,hl
+   01D3 23            [ 6]  471 	inc	hl
+   01D4 23            [ 6]  472 	inc	hl
+   01D5 7E            [ 7]  473 	ld	a,(hl)
+   01D6 87            [ 4]  474 	add	a, a
+   01D7 B1            [ 4]  475 	or	a, c
+   01D8 D3 63         [11]  476 	out	(_PPI_CTRL),a
+   01DA DD E1         [14]  477 	pop	ix
+   01DC C9            [10]  478 	ret
+                            479 ;/opt/SMZ80_SDK/V1/include/smz80.h:347: void ppi_set_portc_bit(const char bit) {
+                            480 ;	---------------------------------
+                            481 ; Function ppi_set_portc_bit
+                            482 ; ---------------------------------
+   01DD                     483 _ppi_set_portc_bit::
+                            484 ;/opt/SMZ80_SDK/V1/include/smz80.h:348: PPI_CTRL = 1 | bit << 1;
+   01DD 21 02 00      [10]  485 	ld	hl, #2+0
+   01E0 39            [11]  486 	add	hl, sp
+   01E1 7E            [ 7]  487 	ld	a, (hl)
+   01E2 87            [ 4]  488 	add	a, a
+   01E3 CB C7         [ 8]  489 	set	0, a
+   01E5 D3 63         [11]  490 	out	(_PPI_CTRL),a
+   01E7 C9            [10]  491 	ret
+                            492 ;/opt/SMZ80_SDK/V1/include/smz80.h:350: void ppi_clear_portc_bit(const char bit) {
+                            493 ;	---------------------------------
+                            494 ; Function ppi_clear_portc_bit
+                            495 ; ---------------------------------
+   01E8                     496 _ppi_clear_portc_bit::
+                            497 ;/opt/SMZ80_SDK/V1/include/smz80.h:351: PPI_CTRL = bit << 1;
+   01E8 21 02 00      [10]  498 	ld	hl, #2+0
+   01EB 39            [11]  499 	add	hl, sp
+   01EC 7E            [ 7]  500 	ld	a, (hl)
+   01ED 87            [ 4]  501 	add	a, a
+   01EE D3 63         [11]  502 	out	(_PPI_CTRL),a
+   01F0 C9            [10]  503 	ret
+                            504 ;/opt/SMZ80_SDK/V1/include/smz80.h:354: void delay_10us(){
+                            505 ;	---------------------------------
+                            506 ; Function delay_10us
+                            507 ; ---------------------------------
+   01F1                     508 _delay_10us::
+                            509 ;/opt/SMZ80_SDK/V1/include/smz80.h:363: __endasm;
+   01F1 D9            [ 4]  510 	EXX
+   01F2 08            [ 4]  511 	EX	AF,AF'
+   01F3 06 02         [ 7]  512 	LD	B,#0x2
+   01F5                     513 	    LOOP_10:
+   01F5 10 FE         [13]  514 	DJNZ	LOOP_10
+   01F7 08            [ 4]  515 	EX	AF,AF'
+   01F8 D9            [ 4]  516 	EXX
+   01F9 C9            [10]  517 	ret
+                            518 ;/opt/SMZ80_SDK/V1/include/smz80.h:365: void delay_100us(){
+                            519 ;	---------------------------------
+                            520 ; Function delay_100us
+                            521 ; ---------------------------------
+   01FA                     522 _delay_100us::
+                            523 ;/opt/SMZ80_SDK/V1/include/smz80.h:374: __endasm;
+   01FA D9            [ 4]  524 	EXX
+   01FB 08            [ 4]  525 	EX	AF,AF'
+   01FC 06 3A         [ 7]  526 	LD	B,#0x3A
+   01FE                     527 	    LOOP_100:
+   01FE 10 FE         [13]  528 	DJNZ	LOOP_100
+   0200 08            [ 4]  529 	EX	AF,AF'
+   0201 D9            [ 4]  530 	EXX
+   0202 C9            [10]  531 	ret
+                            532 ;/opt/SMZ80_SDK/V1/include/smz80.h:376: void delay_ms(int ms) {
+                            533 ;	---------------------------------
+                            534 ; Function delay_ms
+                            535 ; ---------------------------------
+   0203                     536 _delay_ms::
+   0203 DD E5         [15]  537 	push	ix
+   0205 DD 21 00 00   [14]  538 	ld	ix,#0
+   0209 DD 39         [15]  539 	add	ix,sp
+                            540 ;/opt/SMZ80_SDK/V1/include/smz80.h:379: while(ms--)
+   020B DD 4E 04      [19]  541 	ld	c,4 (ix)
+   020E DD 46 05      [19]  542 	ld	b,5 (ix)
+   0211                     543 00102$:
+   0211 59            [ 4]  544 	ld	e, c
+   0212 50            [ 4]  545 	ld	d, b
+   0213 0B            [ 6]  546 	dec	bc
+   0214 7A            [ 4]  547 	ld	a,d
+   0215 B3            [ 4]  548 	or	a,e
+   0216 28 0E         [12]  549 	jr	Z,00108$
+                            550 ;/opt/SMZ80_SDK/V1/include/smz80.h:380: for(i=0;i<0x106;i++)
+   0218 11 06 01      [10]  551 	ld	de,#0x0106
+   021B                     552 00107$:
+                            553 ;/opt/SMZ80_SDK/V1/include/smz80.h:381: __asm__("nop");
+   021B 00            [ 4]  554 	nop
+   021C EB            [ 4]  555 	ex	de,hl
+   021D 2B            [ 6]  556 	dec	hl
+   021E 5D            [ 4]  557 	ld	e, l
+                            558 ;/opt/SMZ80_SDK/V1/include/smz80.h:380: for(i=0;i<0x106;i++)
+   021F 7C            [ 4]  559 	ld	a,h
+   0220 57            [ 4]  560 	ld	d,a
+   0221 B5            [ 4]  561 	or	a,l
+   0222 20 F7         [12]  562 	jr	NZ,00107$
+   0224 18 EB         [12]  563 	jr	00102$
+   0226                     564 00108$:
+   0226 DD E1         [14]  565 	pop	ix
+   0228 C9            [10]  566 	ret
+                            567 ;/opt/SMZ80_SDK/V1/include/smz80.h:383: int putchar(int c) {
+                            568 ;	---------------------------------
+                            569 ; Function putchar
+                            570 ; ---------------------------------
+   0229                     571 _putchar::
+                            572 ;/opt/SMZ80_SDK/V1/include/smz80.h:385: if(c=='\n')
+   0229 FD 21 02 00   [14]  573 	ld	iy,#2
+   022D FD 39         [15]  574 	add	iy,sp
+   022F FD 7E 00      [19]  575 	ld	a,0 (iy)
+   0232 D6 0A         [ 7]  576 	sub	a, #0x0a
+   0234 20 0E         [12]  577 	jr	NZ,00102$
+   0236 FD 7E 01      [19]  578 	ld	a,1 (iy)
+   0239 B7            [ 4]  579 	or	a, a
+   023A 20 08         [12]  580 	jr	NZ,00102$
+                            581 ;/opt/SMZ80_SDK/V1/include/smz80.h:386: uart_write('\r');
+   023C 3E 0D         [ 7]  582 	ld	a,#0x0d
+   023E F5            [11]  583 	push	af
+   023F 33            [ 6]  584 	inc	sp
+   0240 CDrACr00      [17]  585 	call	_uart_write
+   0243 33            [ 6]  586 	inc	sp
+   0244                     587 00102$:
+                            588 ;/opt/SMZ80_SDK/V1/include/smz80.h:387: uart_write(c);
+   0244 21 02 00      [10]  589 	ld	hl, #2+0
+   0247 39            [11]  590 	add	hl, sp
+   0248 46            [ 7]  591 	ld	b, (hl)
+   0249 C5            [11]  592 	push	bc
+   024A 33            [ 6]  593 	inc	sp
+   024B CDrACr00      [17]  594 	call	_uart_write
+   024E 33            [ 6]  595 	inc	sp
+                            596 ;/opt/SMZ80_SDK/V1/include/smz80.h:389: return c;
+   024F C1            [10]  597 	pop	bc
+   0250 E1            [10]  598 	pop	hl
+   0251 E5            [11]  599 	push	hl
+   0252 C5            [11]  600 	push	bc
+   0253 C9            [10]  601 	ret
+                            602 ;/opt/SMZ80_SDK/V1/include/smz80.h:391: char getchar() {
+                            603 ;	---------------------------------
+                            604 ; Function getchar
+                            605 ; ---------------------------------
+   0254                     606 _getchar::
+                            607 ;/opt/SMZ80_SDK/V1/include/smz80.h:394: return uart_read();
+   0254 C3rBDr00      [10]  608 	jp  _uart_read
+                            609 ;main.c:6: ISR_NMI() {
+                            610 ;	---------------------------------
+                            611 ; Function isr_vector66
+                            612 ; ---------------------------------
+   0257                     613 _isr_vector66::
+   0257 F5            [11]  614 	push	af
+   0258 C5            [11]  615 	push	bc
+   0259 D5            [11]  616 	push	de
+   025A E5            [11]  617 	push	hl
+   025B FD E5         [15]  618 	push	iy
+                            619 ;main.c:7: }
+   025D FD E1         [14]  620 	pop	iy
+   025F E1            [10]  621 	pop	hl
+   0260 D1            [10]  622 	pop	de
+   0261 C1            [10]  623 	pop	bc
+   0262 F1            [10]  624 	pop	af
+   0263 ED 45         [14]  625 	retn
+                            626 ;main.c:9: ISR_INT_38() {
+                            627 ;	---------------------------------
+                            628 ; Function isr_vector38
+                            629 ; ---------------------------------
+   0265                     630 _isr_vector38::
+   0265 FB            [ 4]  631 	ei
+   0266 F5            [11]  632 	push	af
+   0267 C5            [11]  633 	push	bc
+   0268 D5            [11]  634 	push	de
+   0269 E5            [11]  635 	push	hl
+   026A FD E5         [15]  636 	push	iy
+                            637 ;main.c:10: }
+   026C FD E1         [14]  638 	pop	iy
+   026E E1            [10]  639 	pop	hl
+   026F D1            [10]  640 	pop	de
+   0270 C1            [10]  641 	pop	bc
+   0271 F1            [10]  642 	pop	af
+   0272 ED 4D         [14]  643 	reti
+                            644 ;main.c:22: int main() {
+                            645 ;	---------------------------------
+                            646 ; Function main
+                            647 ; ---------------------------------
+   0274                     648 _main::
+                            649 ;main.c:25: system_init();
+   0274 CDr99r02      [17]  650 	call	_system_init
+                            651 ;main.c:27: while(TRUE) {
+   0277                     652 00102$:
+                            653 ;main.c:28: URTHR = 'a';
+   0277 3E 61         [ 7]  654 	ld	a,#0x61
+   0279 D3 70         [11]  655 	out	(_URTHR),a
+                            656 ;main.c:29: PORTC = 0xff;
+   027B 3E FF         [ 7]  657 	ld	a,#0xff
+   027D D3 62         [11]  658 	out	(_PORTC),a
+                            659 ;main.c:30: delay_ms(1000);
+   027F 21 E8 03      [10]  660 	ld	hl,#0x03e8
+   0282 E5            [11]  661 	push	hl
+   0283 CDr03r02      [17]  662 	call	_delay_ms
+   0286 F1            [10]  663 	pop	af
+                            664 ;main.c:31: PORTC = 0x00;
+   0287 3E 00         [ 7]  665 	ld	a,#0x00
+   0289 D3 62         [11]  666 	out	(_PORTC),a
+                            667 ;main.c:33: URTHR = 'u';
+   028B 3E 75         [ 7]  668 	ld	a,#0x75
+   028D D3 70         [11]  669 	out	(_URTHR),a
+                            670 ;main.c:34: delay_ms(1000);
+   028F 21 E8 03      [10]  671 	ld	hl,#0x03e8
+   0292 E5            [11]  672 	push	hl
+   0293 CDr03r02      [17]  673 	call	_delay_ms
+   0296 F1            [10]  674 	pop	af
+   0297 18 DE         [12]  675 	jr	00102$
+                            676 ;main.c:41: void system_init() {
+                            677 ;	---------------------------------
+                            678 ; Function system_init
+                            679 ; ---------------------------------
+   0299                     680 _system_init::
+   0299 F5            [11]  681 	push	af
+   029A F5            [11]  682 	push	af
+   029B 3B            [ 6]  683 	dec	sp
+                            684 ;main.c:43: uartConfig.baudrate = UART_BAUDRATE_9600;
+   029C 21 00 00      [10]  685 	ld	hl,#0x0000
+   029F 39            [11]  686 	add	hl,sp
+   02A0 36 1A         [10]  687 	ld	(hl),#0x1a
+                            688 ;main.c:44: uartConfig.stop_bits = UART_STOP_BITS_1;
+   02A2 21 00 00      [10]  689 	ld	hl,#0x0000
+   02A5 39            [11]  690 	add	hl,sp
+   02A6 4D            [ 4]  691 	ld	c,l
+   02A7 44            [ 4]  692 	ld	b,h
+   02A8 59            [ 4]  693 	ld	e, c
+   02A9 50            [ 4]  694 	ld	d, b
+   02AA 13            [ 6]  695 	inc	de
+   02AB AF            [ 4]  696 	xor	a, a
+   02AC 12            [ 7]  697 	ld	(de),a
+                            698 ;main.c:45: uartConfig.parity = UART_PARITY_NONE;
+   02AD 59            [ 4]  699 	ld	e, c
+   02AE 50            [ 4]  700 	ld	d, b
+   02AF 13            [ 6]  701 	inc	de
+   02B0 13            [ 6]  702 	inc	de
+   02B1 AF            [ 4]  703 	xor	a, a
+   02B2 12            [ 7]  704 	ld	(de),a
+                            705 ;main.c:46: uartConfig.word_length = UART_WORD_LENGTH_8;
+   02B3 69            [ 4]  706 	ld	l, c
+   02B4 60            [ 4]  707 	ld	h, b
+   02B5 23            [ 6]  708 	inc	hl
+   02B6 23            [ 6]  709 	inc	hl
+   02B7 23            [ 6]  710 	inc	hl
+   02B8 36 03         [10]  711 	ld	(hl),#0x03
+                            712 ;main.c:47: uartConfig.interrupt = UART_INTERRUPT_NONE;
+   02BA 21 04 00      [10]  713 	ld	hl,#0x0004
+   02BD 09            [11]  714 	add	hl,bc
+   02BE 36 00         [10]  715 	ld	(hl),#0x00
+                            716 ;main.c:48: uart_init(&uartConfig);
+   02C0 C5            [11]  717 	push	bc
+   02C1 CDr5Dr00      [17]  718 	call	_uart_init
+   02C4 F1            [10]  719 	pop	af
+                            720 ;main.c:49: configPPI();
+   02C5 CDrCCr02      [17]  721 	call	_configPPI
+   02C8 F1            [10]  722 	pop	af
+   02C9 F1            [10]  723 	pop	af
+   02CA 33            [ 6]  724 	inc	sp
+   02CB C9            [10]  725 	ret
+                            726 ;main.c:59: void configPPI() {
+                            727 ;	---------------------------------
+                            728 ; Function configPPI
+                            729 ; ---------------------------------
+   02CC                     730 _configPPI::
+                            731 ;main.c:61: PPI_CTRL = 0x92;
+   02CC 3E 92         [ 7]  732 	ld	a,#0x92
+   02CE D3 63         [11]  733 	out	(_PPI_CTRL),a
+   02D0 C9            [10]  734 	ret
+                            735 	.area _CODE
+                            736 	.area _INITIALIZER
+                            737 	.area _CABS (ABS)

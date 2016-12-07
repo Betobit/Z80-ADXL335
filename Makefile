@@ -34,7 +34,7 @@
 
 
 #Nombre del Proyecto
-PROYECT_NAME := Z80-Template
+PROYECT_NAME := Driver-ADXL335
 
 
 # Cambiar la variable SDK_PATH con la ruta de instalación del

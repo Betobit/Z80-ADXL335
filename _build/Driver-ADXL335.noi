@@ -35,11 +35,11 @@ DEF l__HEADER8 0x3
 DEF l__HEADER9 0xA
 DEF l__GSINIT 0xF
 DEF s__CODE 0xA0
-DEF l__CODE 0x2C8
-DEF s__GSINIT 0x368
-DEF s__HOME 0x368
-DEF s__INITIALIZER 0x368
-DEF s__GSFINAL 0x377
+DEF l__CODE 0x303
+DEF s__GSINIT 0x3A3
+DEF s__HOME 0x3A3
+DEF s__INITIALIZER 0x3A3
+DEF s__GSFINAL 0x3B2
 DEF s__DATA 0x8000
 DEF s__BSEG 0x8001
 DEF s__BSS 0x8001
@@ -67,8 +67,9 @@ DEF _putchar 0x2C9
 DEF _getchar 0x2F4
 DEF _isr_vector66 0x2F7
 DEF _isr_vector38 0x305
-DEF _system_init 0x314
-DEF _main 0x315
-DEF _isprint 0x336
-DEF gsinit 0x368
-LOAD _build/Z80-Template.ihx
+DEF _main 0x314
+DEF _system_init 0x339
+DEF _configPPI 0x36C
+DEF _isprint 0x371
+DEF gsinit 0x3A3
+LOAD _build/Driver-ADXL335.ihx

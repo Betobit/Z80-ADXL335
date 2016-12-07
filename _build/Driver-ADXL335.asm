@@ -9,7 +9,6 @@
 ; Public variables in this module
 ;--------------------------------------------------------
 	.globl _main
-	.globl _system_init
 	.globl _isr_vector38
 	.globl _isr_vector66
 	.globl _isprint
@@ -33,23 +32,28 @@
 	.globl _delay_ms
 	.globl _putchar
 	.globl _getchar
+	.globl _system_init
+	.globl _configPPI
 ;--------------------------------------------------------
 ; special function registers
 ;--------------------------------------------------------
-_PPI_PORTA	=	0x0000
-_PPI_PORTB	=	0x0001
-_PPI_PORTC	=	0x0002
-_PPI_CTRL	=	0x0003
-_URRBR	=	0x0010
-_URTHR	=	0x0010
-_URIER	=	0x0011
-_URIIR	=	0x0012
-_URLCR	=	0x0013
-_URLSR	=	0x0015
-_URMCR	=	0x0014
-_URMSR	=	0x0016
-_URDLL	=	0x0010
-_URDLM	=	0x0011
+_PPI_PORTA	=	0x0060
+_PPI_PORTB	=	0x0061
+_PPI_PORTC	=	0x0062
+_PPI_CTRL	=	0x0063
+_URRBR	=	0x0070
+_URTHR	=	0x0070
+_URIER	=	0x0071
+_URIIR	=	0x0072
+_URLCR	=	0x0073
+_URLSR	=	0x0075
+_URMCR	=	0x0074
+_URMSR	=	0x0076
+_URDLL	=	0x0070
+_URDLM	=	0x0071
+_PORTA	=	0x0060
+_PORTB	=	0x0061
+_PORTC	=	0x0062
 ;--------------------------------------------------------
 ; ram data
 ;--------------------------------------------------------
@@ -602,7 +606,7 @@ _putchar::
 _getchar::
 ;/opt/SMZ80_SDK/V1/include/smz80.h:394: return uart_read();
 	jp  _uart_read
-;main.c:30: ISR_NMI(){
+;main.c:6: ISR_NMI() {
 ;	---------------------------------
 ; Function isr_vector66
 ; ---------------------------------
@@ -612,14 +616,14 @@ _isr_vector66::
 	push	de
 	push	hl
 	push	iy
-;main.c:33: }
+;main.c:7: }
 	pop	iy
 	pop	hl
 	pop	de
 	pop	bc
 	pop	af
 	retn
-;main.c:35: ISR_INT_38(){
+;main.c:9: ISR_INT_38() {
 ;	---------------------------------
 ; Function isr_vector38
 ; ---------------------------------
@@ -630,49 +634,104 @@ _isr_vector38::
 	push	de
 	push	hl
 	push	iy
-;main.c:38: }
+;main.c:10: }
 	pop	iy
 	pop	hl
 	pop	de
 	pop	bc
 	pop	af
 	reti
-;main.c:41: void system_init(){
-;	---------------------------------
-; Function system_init
-; ---------------------------------
-_system_init::
-;main.c:44: }
-	ret
-;main.c:46: int main(){
+;main.c:22: int main() {
 ;	---------------------------------
 ; Function main
 ; ---------------------------------
 _main::
-;main.c:49: system_init(); 
+;main.c:25: system_init();
 	call	_system_init
-;main.c:50: PPI_CTRL= 0x80;
-	ld	a,#0x80
-	out	(_PPI_CTRL),a
-;main.c:52: while(TRUE){
+;main.c:27: while(TRUE) {
 00102$:
-;main.c:53: PPI_PORTA = 0xff;
+;main.c:28: URTHR = 'a';
+	ld	a,#0x61
+	out	(_URTHR),a
+;main.c:29: PORTC = 0xff;
 	ld	a,#0xff
-	out	(_PPI_PORTA),a
-;main.c:54: delay_ms(2000);
-	ld	hl,#0x07d0
+	out	(_PORTC),a
+;main.c:30: delay_ms(1000);
+	ld	hl,#0x03e8
 	push	hl
 	call	_delay_ms
 	pop	af
-;main.c:56: PPI_PORTA = 0x00;
+;main.c:31: PORTC = 0x00;
 	ld	a,#0x00
-	out	(_PPI_PORTA),a
-;main.c:57: delay_ms(2000);
-	ld	hl,#0x07d0
+	out	(_PORTC),a
+;main.c:33: URTHR = 'u';
+	ld	a,#0x75
+	out	(_URTHR),a
+;main.c:34: delay_ms(1000);
+	ld	hl,#0x03e8
 	push	hl
 	call	_delay_ms
 	pop	af
 	jr	00102$
+;main.c:41: void system_init() {
+;	---------------------------------
+; Function system_init
+; ---------------------------------
+_system_init::
+	push	af
+	push	af
+	dec	sp
+;main.c:43: uartConfig.baudrate = UART_BAUDRATE_9600;
+	ld	hl,#0x0000
+	add	hl,sp
+	ld	(hl),#0x1a
+;main.c:44: uartConfig.stop_bits = UART_STOP_BITS_1;
+	ld	hl,#0x0000
+	add	hl,sp
+	ld	c,l
+	ld	b,h
+	ld	e, c
+	ld	d, b
+	inc	de
+	xor	a, a
+	ld	(de),a
+;main.c:45: uartConfig.parity = UART_PARITY_NONE;
+	ld	e, c
+	ld	d, b
+	inc	de
+	inc	de
+	xor	a, a
+	ld	(de),a
+;main.c:46: uartConfig.word_length = UART_WORD_LENGTH_8;
+	ld	l, c
+	ld	h, b
+	inc	hl
+	inc	hl
+	inc	hl
+	ld	(hl),#0x03
+;main.c:47: uartConfig.interrupt = UART_INTERRUPT_NONE;
+	ld	hl,#0x0004
+	add	hl,bc
+	ld	(hl),#0x00
+;main.c:48: uart_init(&uartConfig);
+	push	bc
+	call	_uart_init
+	pop	af
+;main.c:49: configPPI();
+	call	_configPPI
+	pop	af
+	pop	af
+	inc	sp
+	ret
+;main.c:59: void configPPI() {
+;	---------------------------------
+; Function configPPI
+; ---------------------------------
+_configPPI::
+;main.c:61: PPI_CTRL = 0x92;
+	ld	a,#0x92
+	out	(_PPI_CTRL),a
+	ret
 	.area _CODE
 	.area _INITIALIZER
 	.area _CABS (ABS)
