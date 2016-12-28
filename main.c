@@ -20,18 +20,19 @@ void configPPI();
 void system_init();
 
 int main() {
-    unsigned char c;
-    c = 0;
+    unsigned char c = 0;
     system_init();
 
     while(TRUE) {
-        URTHR = 'a';
-        PORTC = 0xff;
-        delay_ms(1000);
         PORTC = 0x00;
+        URTHR = PORTA;
+        delay_ms(25);
+        // leer PUERTO
+        //URTHR = c > 254 ? c = 0 : c++;
+        PORTC = 0x01;
+        URTHR = PORTA;
+        delay_ms(25);
         //uart_write(c > 254 ? c = 0 : c++);
-        URTHR = 'u';
-        delay_ms(1000);
     }
 }
 
@@ -54,7 +55,7 @@ void system_init() {
     PORT A - Input
     PORT B - Input
     PORT C HIGH - Don't care
-    PORT C LOW  - Don't care
+    PORT C LOW  - Output
 **/
 void configPPI() {
     // CONTROL WORD = 1001 0010

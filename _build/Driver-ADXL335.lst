@@ -646,34 +646,34 @@
                             646 ; Function main
                             647 ; ---------------------------------
    0274                     648 _main::
-                            649 ;main.c:25: system_init();
+                            649 ;main.c:24: system_init();
    0274 CDr99r02      [17]  650 	call	_system_init
-                            651 ;main.c:27: while(TRUE) {
+                            651 ;main.c:26: while(TRUE) {
    0277                     652 00102$:
-                            653 ;main.c:28: URTHR = 'a';
-   0277 3E 61         [ 7]  654 	ld	a,#0x61
-   0279 D3 70         [11]  655 	out	(_URTHR),a
-                            656 ;main.c:29: PORTC = 0xff;
-   027B 3E FF         [ 7]  657 	ld	a,#0xff
-   027D D3 62         [11]  658 	out	(_PORTC),a
-                            659 ;main.c:30: delay_ms(1000);
-   027F 21 E8 03      [10]  660 	ld	hl,#0x03e8
+                            653 ;main.c:27: PORTC = 0x00;
+   0277 3E 00         [ 7]  654 	ld	a,#0x00
+   0279 D3 62         [11]  655 	out	(_PORTC),a
+                            656 ;main.c:28: URTHR = PORTA;
+   027B DB 60         [11]  657 	in	a,(_PORTA)
+   027D D3 70         [11]  658 	out	(_URTHR),a
+                            659 ;main.c:29: delay_ms(25);
+   027F 21 19 00      [10]  660 	ld	hl,#0x0019
    0282 E5            [11]  661 	push	hl
    0283 CDr03r02      [17]  662 	call	_delay_ms
    0286 F1            [10]  663 	pop	af
-                            664 ;main.c:31: PORTC = 0x00;
-   0287 3E 00         [ 7]  665 	ld	a,#0x00
+                            664 ;main.c:32: PORTC = 0x01;
+   0287 3E 01         [ 7]  665 	ld	a,#0x01
    0289 D3 62         [11]  666 	out	(_PORTC),a
-                            667 ;main.c:33: URTHR = 'u';
-   028B 3E 75         [ 7]  668 	ld	a,#0x75
+                            667 ;main.c:33: URTHR = PORTA;
+   028B DB 60         [11]  668 	in	a,(_PORTA)
    028D D3 70         [11]  669 	out	(_URTHR),a
-                            670 ;main.c:34: delay_ms(1000);
-   028F 21 E8 03      [10]  671 	ld	hl,#0x03e8
+                            670 ;main.c:34: delay_ms(25);
+   028F 21 19 00      [10]  671 	ld	hl,#0x0019
    0292 E5            [11]  672 	push	hl
    0293 CDr03r02      [17]  673 	call	_delay_ms
    0296 F1            [10]  674 	pop	af
    0297 18 DE         [12]  675 	jr	00102$
-                            676 ;main.c:41: void system_init() {
+                            676 ;main.c:42: void system_init() {
                             677 ;	---------------------------------
                             678 ; Function system_init
                             679 ; ---------------------------------
@@ -681,11 +681,11 @@
    0299 F5            [11]  681 	push	af
    029A F5            [11]  682 	push	af
    029B 3B            [ 6]  683 	dec	sp
-                            684 ;main.c:43: uartConfig.baudrate = UART_BAUDRATE_9600;
+                            684 ;main.c:44: uartConfig.baudrate = UART_BAUDRATE_9600;
    029C 21 00 00      [10]  685 	ld	hl,#0x0000
    029F 39            [11]  686 	add	hl,sp
    02A0 36 1A         [10]  687 	ld	(hl),#0x1a
-                            688 ;main.c:44: uartConfig.stop_bits = UART_STOP_BITS_1;
+                            688 ;main.c:45: uartConfig.stop_bits = UART_STOP_BITS_1;
    02A2 21 00 00      [10]  689 	ld	hl,#0x0000
    02A5 39            [11]  690 	add	hl,sp
    02A6 4D            [ 4]  691 	ld	c,l
@@ -695,40 +695,40 @@
    02AA 13            [ 6]  695 	inc	de
    02AB AF            [ 4]  696 	xor	a, a
    02AC 12            [ 7]  697 	ld	(de),a
-                            698 ;main.c:45: uartConfig.parity = UART_PARITY_NONE;
+                            698 ;main.c:46: uartConfig.parity = UART_PARITY_NONE;
    02AD 59            [ 4]  699 	ld	e, c
    02AE 50            [ 4]  700 	ld	d, b
    02AF 13            [ 6]  701 	inc	de
    02B0 13            [ 6]  702 	inc	de
    02B1 AF            [ 4]  703 	xor	a, a
    02B2 12            [ 7]  704 	ld	(de),a
-                            705 ;main.c:46: uartConfig.word_length = UART_WORD_LENGTH_8;
+                            705 ;main.c:47: uartConfig.word_length = UART_WORD_LENGTH_8;
    02B3 69            [ 4]  706 	ld	l, c
    02B4 60            [ 4]  707 	ld	h, b
    02B5 23            [ 6]  708 	inc	hl
    02B6 23            [ 6]  709 	inc	hl
    02B7 23            [ 6]  710 	inc	hl
    02B8 36 03         [10]  711 	ld	(hl),#0x03
-                            712 ;main.c:47: uartConfig.interrupt = UART_INTERRUPT_NONE;
+                            712 ;main.c:48: uartConfig.interrupt = UART_INTERRUPT_NONE;
    02BA 21 04 00      [10]  713 	ld	hl,#0x0004
    02BD 09            [11]  714 	add	hl,bc
    02BE 36 00         [10]  715 	ld	(hl),#0x00
-                            716 ;main.c:48: uart_init(&uartConfig);
+                            716 ;main.c:49: uart_init(&uartConfig);
    02C0 C5            [11]  717 	push	bc
    02C1 CDr5Dr00      [17]  718 	call	_uart_init
    02C4 F1            [10]  719 	pop	af
-                            720 ;main.c:49: configPPI();
+                            720 ;main.c:50: configPPI();
    02C5 CDrCCr02      [17]  721 	call	_configPPI
    02C8 F1            [10]  722 	pop	af
    02C9 F1            [10]  723 	pop	af
    02CA 33            [ 6]  724 	inc	sp
    02CB C9            [10]  725 	ret
-                            726 ;main.c:59: void configPPI() {
+                            726 ;main.c:60: void configPPI() {
                             727 ;	---------------------------------
                             728 ; Function configPPI
                             729 ; ---------------------------------
    02CC                     730 _configPPI::
-                            731 ;main.c:61: PPI_CTRL = 0x92;
+                            731 ;main.c:62: PPI_CTRL = 0x92;
    02CC 3E 92         [ 7]  732 	ld	a,#0x92
    02CE D3 63         [11]  733 	out	(_PPI_CTRL),a
    02D0 C9            [10]  734 	ret

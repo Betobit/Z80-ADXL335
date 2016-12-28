@@ -646,34 +646,34 @@ _isr_vector38::
 ; Function main
 ; ---------------------------------
 _main::
-;main.c:25: system_init();
+;main.c:24: system_init();
 	call	_system_init
-;main.c:27: while(TRUE) {
+;main.c:26: while(TRUE) {
 00102$:
-;main.c:28: URTHR = 'a';
-	ld	a,#0x61
-	out	(_URTHR),a
-;main.c:29: PORTC = 0xff;
-	ld	a,#0xff
+;main.c:27: PORTC = 0x00;
+	ld	a,#0x00
 	out	(_PORTC),a
-;main.c:30: delay_ms(1000);
-	ld	hl,#0x03e8
+;main.c:28: URTHR = PORTA;
+	in	a,(_PORTA)
+	out	(_URTHR),a
+;main.c:29: delay_ms(25);
+	ld	hl,#0x0019
 	push	hl
 	call	_delay_ms
 	pop	af
-;main.c:31: PORTC = 0x00;
-	ld	a,#0x00
+;main.c:32: PORTC = 0x01;
+	ld	a,#0x01
 	out	(_PORTC),a
-;main.c:33: URTHR = 'u';
-	ld	a,#0x75
+;main.c:33: URTHR = PORTA;
+	in	a,(_PORTA)
 	out	(_URTHR),a
-;main.c:34: delay_ms(1000);
-	ld	hl,#0x03e8
+;main.c:34: delay_ms(25);
+	ld	hl,#0x0019
 	push	hl
 	call	_delay_ms
 	pop	af
 	jr	00102$
-;main.c:41: void system_init() {
+;main.c:42: void system_init() {
 ;	---------------------------------
 ; Function system_init
 ; ---------------------------------
@@ -681,11 +681,11 @@ _system_init::
 	push	af
 	push	af
 	dec	sp
-;main.c:43: uartConfig.baudrate = UART_BAUDRATE_9600;
+;main.c:44: uartConfig.baudrate = UART_BAUDRATE_9600;
 	ld	hl,#0x0000
 	add	hl,sp
 	ld	(hl),#0x1a
-;main.c:44: uartConfig.stop_bits = UART_STOP_BITS_1;
+;main.c:45: uartConfig.stop_bits = UART_STOP_BITS_1;
 	ld	hl,#0x0000
 	add	hl,sp
 	ld	c,l
@@ -695,40 +695,40 @@ _system_init::
 	inc	de
 	xor	a, a
 	ld	(de),a
-;main.c:45: uartConfig.parity = UART_PARITY_NONE;
+;main.c:46: uartConfig.parity = UART_PARITY_NONE;
 	ld	e, c
 	ld	d, b
 	inc	de
 	inc	de
 	xor	a, a
 	ld	(de),a
-;main.c:46: uartConfig.word_length = UART_WORD_LENGTH_8;
+;main.c:47: uartConfig.word_length = UART_WORD_LENGTH_8;
 	ld	l, c
 	ld	h, b
 	inc	hl
 	inc	hl
 	inc	hl
 	ld	(hl),#0x03
-;main.c:47: uartConfig.interrupt = UART_INTERRUPT_NONE;
+;main.c:48: uartConfig.interrupt = UART_INTERRUPT_NONE;
 	ld	hl,#0x0004
 	add	hl,bc
 	ld	(hl),#0x00
-;main.c:48: uart_init(&uartConfig);
+;main.c:49: uart_init(&uartConfig);
 	push	bc
 	call	_uart_init
 	pop	af
-;main.c:49: configPPI();
+;main.c:50: configPPI();
 	call	_configPPI
 	pop	af
 	pop	af
 	inc	sp
 	ret
-;main.c:59: void configPPI() {
+;main.c:60: void configPPI() {
 ;	---------------------------------
 ; Function configPPI
 ; ---------------------------------
 _configPPI::
-;main.c:61: PPI_CTRL = 0x92;
+;main.c:62: PPI_CTRL = 0x92;
 	ld	a,#0x92
 	out	(_PPI_CTRL),a
 	ret
